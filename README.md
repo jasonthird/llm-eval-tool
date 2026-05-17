@@ -6,7 +6,7 @@ This repository currently publishes one focused comparison:
 
 - DeepSeek V4 Flash
 - DeepSeek V4 Pro
-- Gemma 4 31B IT Nitro
+- Gemma 4 31B IT
 
 The goal is not to claim a universal benchmark. The goal is to make a small, repeatable, inspectable evaluation suite for the kinds of tasks we care about: messy Greek/Greeklish language understanding, basic logic, basic math, and whether Python tools actually help on hard math.
 
