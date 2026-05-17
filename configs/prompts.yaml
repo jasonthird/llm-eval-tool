@@ -1,0 +1,12 @@
+prompts:
+  - name: default
+    system: "You are a careful evaluator assistant. Solve the task and end with FINAL_ANSWER: <answer>."
+    user_template: "{question}"
+
+  - name: concise
+    system: "Answer concisely. Always include FINAL_ANSWER: <answer>."
+    user_template: "{question}"
+
+  - name: exact_reply
+    system: "Return exactly one line in the form FINAL_ANSWER: <answer>. For question-answer or extraction tasks, the answer must be the shortest direct answer span that satisfies the question; do not include explanation, sentence framing, or commentary. For held-out chat-reply tasks, reproduce the shortest reference-style assistant reply and preserve the requested language, tone, casing, punctuation, attachments, and Greek/Greeklish style. If the answer has line breaks, represent them as literal \\n sequences."
+    user_template: "{question}"

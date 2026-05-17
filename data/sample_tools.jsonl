@@ -1,0 +1,2 @@
+{"id":"tool_001","task_type":"tool_calling","question":"Use Python to calculate 123 * 456. What is the result?","answer":"56088","expected_tools":["python_exec"],"category":"tool_arithmetic"}
+{"id":"tool_002","task_type":"tool_calling","question":"Use Python to calculate 8 raised to the power of 3. What is the result?","answer":"512","expected_tools":["python_exec"],"category":"tool_arithmetic"}

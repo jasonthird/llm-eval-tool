@@ -1,0 +1,3 @@
+{"id":"mt_001","task_type":"multi_turn","turns":[{"role":"user","content":"Remember this number: 17."},{"role":"user","content":"Now multiply the number by 3. What is the result?"}],"answer":"51","category":"state_tracking"}
+{"id":"mt_002","task_type":"multi_turn","turns":[{"role":"user","content":"Remember the word: cobalt."},{"role":"user","content":"What word did I ask you to remember?"}],"answer":"cobalt","category":"state_tracking"}
+

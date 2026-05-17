@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="610" viewBox="0 0 1120 610" role="img" aria-labelledby="title desc">
+<title id="title">Greek Language Understanding Accuracy</title>
+<desc id="desc">Accuracy on 108 Greek language-understanding tasks for DeepSeek V4 Flash, DeepSeek V4 Pro, and Gemma 4 31B IT Nitro.</desc>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="42" y="48" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25" font-weight="750" fill="#172033">Greek Language Understanding</text>
+<text x="42" y="76" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" fill="#64748b">Accuracy on 108 messy Greek, Greeklish, mixed-script, and non-standard Greek tasks.</text>
+<line x1="86" y1="448.0" x2="1034" y2="448.0" stroke="#e5e7eb"/>
+<text x="72" y="452.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">0%</text>
+<line x1="86" y1="365.5" x2="1034" y2="365.5" stroke="#e5e7eb"/>
+<text x="72" y="369.5" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">25%</text>
+<line x1="86" y1="283.0" x2="1034" y2="283.0" stroke="#e5e7eb"/>
+<text x="72" y="287.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">50%</text>
+<line x1="86" y1="200.5" x2="1034" y2="200.5" stroke="#e5e7eb"/>
+<text x="72" y="204.5" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">75%</text>
+<line x1="86" y1="118.0" x2="1034" y2="118.0" stroke="#e5e7eb"/>
+<text x="72" y="122.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">100%</text>
+<rect x="86.0" y="142.4" width="167.2" height="305.6" rx="7" fill="#2563eb"/>
+<text x="169.6" y="130.4" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="750" fill="#172033" text-anchor="middle">92.6%</text>
+<text x="169.6" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Flash</text>
+<text x="169.6" y="503" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">thinking off</text>
+<rect x="281.2" y="130.2" width="167.2" height="317.8" rx="7" fill="#059669"/>
+<text x="364.8" y="118.2" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="750" fill="#172033" text-anchor="middle">96.3%</text>
+<text x="364.8" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Flash</text>
+<text x="364.8" y="503" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">high thinking</text>
+<rect x="476.4" y="139.4" width="167.2" height="308.6" rx="7" fill="#d97706"/>
+<text x="560.0" y="127.4" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="750" fill="#172033" text-anchor="middle">93.5%</text>
+<text x="560.0" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Pro</text>
+<text x="560.0" y="503" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">thinking off</text>
+<rect x="671.6" y="130.2" width="167.2" height="317.8" rx="7" fill="#dc2626"/>
+<text x="755.2" y="118.2" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="750" fill="#172033" text-anchor="middle">96.3%</text>
+<text x="755.2" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Pro</text>
+<text x="755.2" y="503" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">high thinking</text>
+<rect x="866.8" y="166.8" width="167.2" height="281.2" rx="7" fill="#7c3aed"/>
+<text x="950.4" y="154.8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="750" fill="#172033" text-anchor="middle">85.2%</text>
+<text x="950.4" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Gemma 4</text>
+<text x="950.4" y="503" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">standard</text>
+<text x="86" y="570" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b">DeepSeek Flash high-thinking and DeepSeek Pro high-thinking tied; Gemma 4 was lower on partial-span Greek/Greeklish answers.</text>
+</svg>
