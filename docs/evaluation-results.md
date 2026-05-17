@@ -27,6 +27,14 @@ reports/deepseek_v4_pro_none_high_completed_subset_20260517.md
 
 results/openrouter_gemma_4_31b_it_nitro_all_active_combined_20260517.jsonl
 reports/openrouter_gemma_4_31b_it_nitro_all_active_combined_20260517.md
+
+results/openrouter_gemma_4_31b_it_nitro_language_20c_20260517.jsonl
+reports/openrouter_gemma_4_31b_it_nitro_language_20c_20260517.md
+
+results/openrouter_gemma_4_31b_it_nitro_remaining_active_20c_retry_20260517.jsonl
+
+results/openrouter_gemma_4_31b_it_nitro_tool_retries_50_20260517.jsonl
+reports/openrouter_gemma_4_31b_it_nitro_tool_retries_50_20260517.md
 ```
 
 ## Published Charts
