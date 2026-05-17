@@ -3,13 +3,13 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "agent-eval-lab"
+name = "llm-eval-tool"
 version = "0.1.0"
 description = "Async LLM and agent evaluation harness with CLI using LiteLLM and PocketFlow."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "Agent Eval Lab" }]
+authors = [{ name = "llm-eval-tool contributors" }]
 dependencies = [
   "litellm>=1.60.0",
   "pocketflow>=0.0.1",
