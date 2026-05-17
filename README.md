@@ -215,6 +215,35 @@ Current local status:
 - `100%` test coverage
 - `vulture` clean
 
+## License
+
+Agent Eval Lab is released under the MIT License. See [LICENSE](LICENSE).
+
+## Dependency Credits
+
+Runtime dependencies:
+
+| Dependency | License |
+|---|---|
+| LiteLLM | MIT |
+| PocketFlow | MIT |
+| Pydantic | MIT |
+| python-dotenv | BSD-3-Clause |
+| PyYAML | MIT |
+| Rich | MIT |
+| Typer | MIT |
+
+Development dependencies:
+
+| Dependency | License |
+|---|---|
+| pytest | MIT |
+| pytest-asyncio | Apache-2.0 |
+| pytest-cov | MIT |
+| Vulture | MIT |
+
+Transitive dependencies are pinned in `uv.lock`; the installed dependency scan found permissive or weak-file-level licenses only, with no GPL/LGPL/AGPL packages.
+
 ## Limitations
 
 - The language benchmark is Greek-focused and intentionally includes messy/non-standard text.
