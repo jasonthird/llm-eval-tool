@@ -1,0 +1,91 @@
+providers:
+  - name: openai
+    api_key_env: OPENAI_API_KEY
+
+  - name: openrouter
+    api_key_env: OPENROUTER_API_KEY
+    api_base: https://openrouter.ai/api/v1
+
+  - name: local
+    api_key_env: LOCAL_API_KEY
+    api_base: http://localhost:8000/v1
+
+  - name: opencode
+    api_key_env: OPENCODE_API_KEY
+    api_base: https://opencode.ai/zen/go/v1/
+
+models:
+  - name: deepseek-v4-flash-none
+    provider: opencode
+    model: openai/deepseek-v4-flash
+    temperature: 0.2
+    max_tokens: 384000
+    extra:
+      extra_body:
+        thinking:
+          type: disabled
+
+  - name: deepseek-v4-flash-high
+    provider: opencode
+    model: openai/deepseek-v4-flash
+    temperature: 0.2
+    max_tokens: 384000
+    extra:
+      reasoning_effort: high
+      extra_body:
+        thinking:
+          type: enabled
+      allowed_openai_params:
+        - reasoning_effort
+
+  - name: deepseek-v4-pro-none
+    provider: opencode
+    model: openai/deepseek-v4-pro
+    temperature: 0.2
+    max_tokens: 384000
+    extra:
+      extra_body:
+        thinking:
+          type: disabled
+
+  - name: deepseek-v4-pro-high
+    provider: opencode
+    model: openai/deepseek-v4-pro
+    temperature: 0.2
+    max_tokens: 384000
+    extra:
+      reasoning_effort: high
+      extra_body:
+        thinking:
+          type: enabled
+      allowed_openai_params:
+        - reasoning_effort
+
+  - name: openrouter-deepseek-v4-pro-none
+    provider: openrouter
+    model: openrouter/deepseek/deepseek-v4-pro
+    temperature: 0.2
+    max_tokens: 384000
+    extra:
+      extra_body:
+        thinking:
+          type: disabled
+
+  - name: openrouter-deepseek-v4-pro-high
+    provider: openrouter
+    model: openrouter/deepseek/deepseek-v4-pro
+    temperature: 0.2
+    max_tokens: 384000
+    extra:
+      reasoning_effort: high
+      extra_body:
+        thinking:
+          type: enabled
+      allowed_openai_params:
+        - reasoning_effort
+
+  - name: openrouter-gemma-4-31b-it-nitro
+    provider: openrouter
+    model: openrouter/google/gemma-4-31b-it:nitro
+    temperature: 0.2
+    max_tokens: 262144

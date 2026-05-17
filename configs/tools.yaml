@@ -1,0 +1,6 @@
+tools:
+  enabled:
+    - calculator_add
+    - calculator_multiply
+    - calculator_power
+    - python_exec

@@ -1,0 +1,6 @@
+{"id":"logic_001","task_type":"single_turn","question":"All bloops are razzes. No razzes are lazzes. Can any bloop be a lazze? Answer yes or no.","answer":"no","answer_regex":"\\bno\\b","category":"deductive_logic"}
+{"id":"logic_002","task_type":"single_turn","question":"Ada is older than Ben. Ben is older than Cy. Who is the youngest?","answer":"Cy","answer_regex":"\\bCy\\b","category":"ordering_logic"}
+{"id":"logic_003","task_type":"single_turn","question":"A lamp starts off. Each button press toggles it. After 17 presses, is the lamp on or off?","answer":"on","answer_regex":"\\bon\\b","category":"parity_logic"}
+{"id":"logic_004","task_type":"single_turn","question":"If every red token is square and this token is red, must this token be square? Answer yes or no.","answer":"yes","answer_regex":"\\byes\\b","category":"deductive_logic"}
+{"id":"logic_005","task_type":"single_turn","question":"A is left of B, and B is left of C. Which letter is rightmost?","answer":"C","answer_regex":"\\bC\\b","category":"ordering_logic"}
+{"id":"logic_006","task_type":"single_turn","question":"Three boxes are in a row. The red box is left of the blue box, and the green box is right of the blue box. Which color is in the middle?","answer":"blue","answer_regex":"\\bblue\\b","category":"ordering_logic"}

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="590" viewBox="0 0 1120 590" role="img" aria-labelledby="title desc">
+<title id="title">Greek Language Understanding Latency</title>
+<desc id="desc">Average latency per task on the 108-task Greek language-understanding run.</desc>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="42" y="48" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25" font-weight="750" fill="#172033">Language Latency</text>
+<text x="42" y="76" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" fill="#64748b">Average seconds per task on the Greek language-understanding run.</text>
+<line x1="86" y1="438.0" x2="1034" y2="438.0" stroke="#e5e7eb"/>
+<text x="72" y="442.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">0s</text>
+<line x1="86" y1="358.0" x2="1034" y2="358.0" stroke="#e5e7eb"/>
+<text x="72" y="362.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">5s</text>
+<line x1="86" y1="278.0" x2="1034" y2="278.0" stroke="#e5e7eb"/>
+<text x="72" y="282.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">10s</text>
+<line x1="86" y1="198.0" x2="1034" y2="198.0" stroke="#e5e7eb"/>
+<text x="72" y="202.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">15s</text>
+<line x1="86" y1="118.0" x2="1034" y2="118.0" stroke="#e5e7eb"/>
+<text x="72" y="122.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">20s</text>
+<rect x="86.0" y="396.4" width="167.2" height="41.6" rx="7" fill="#2563eb"/>
+<text x="169.6" y="384.4" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="750" fill="#172033" text-anchor="middle">2.6s</text>
+<text x="169.6" y="472" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Flash</text>
+<text x="169.6" y="493" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">thinking off</text>
+<rect x="281.2" y="298.8" width="167.2" height="139.2" rx="7" fill="#059669"/>
+<text x="364.8" y="286.8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="750" fill="#172033" text-anchor="middle">8.7s</text>
+<text x="364.8" y="472" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Flash</text>
+<text x="364.8" y="493" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">high thinking</text>
+<rect x="476.4" y="175.6" width="167.2" height="262.4" rx="7" fill="#d97706"/>
+<text x="560.0" y="163.6" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="750" fill="#172033" text-anchor="middle">16.4s</text>
+<text x="560.0" y="472" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Pro</text>
+<text x="560.0" y="493" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">thinking off</text>
+<rect x="671.6" y="161.2" width="167.2" height="276.8" rx="7" fill="#dc2626"/>
+<text x="755.2" y="149.2" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="750" fill="#172033" text-anchor="middle">17.3s</text>
+<text x="755.2" y="472" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Pro</text>
+<text x="755.2" y="493" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">high thinking</text>
+<rect x="866.8" y="396.4" width="167.2" height="41.6" rx="7" fill="#7c3aed"/>
+<text x="950.4" y="384.4" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="750" fill="#172033" text-anchor="middle">2.6s</text>
+<text x="950.4" y="472" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Gemma 4</text>
+<text x="950.4" y="493" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">standard</text>
+<text x="86" y="550" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b">Flash thinking-off and Gemma 4 were fastest on this language run; Pro was slower through this route.</text>
+</svg>

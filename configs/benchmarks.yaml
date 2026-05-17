@@ -1,0 +1,40 @@
+benchmarks:
+  - name: sample_math
+    task_type: single_turn
+    path: data/sample_math.jsonl
+    prompt: default
+
+  - name: sample_logic
+    task_type: single_turn
+    path: data/sample_logic.jsonl
+    prompt: default
+
+  - name: aimo3_reference
+    task_type: single_turn
+    path: data/aimo3_reference.jsonl
+    prompt: default
+
+  - name: aimo3_reference_multiturn
+    task_type: multi_turn
+    path: data/aimo3_reference_multiturn.jsonl
+    prompt: default
+
+  - name: aimo3_reference_python_tools
+    task_type: tool_calling
+    path: data/aimo3_reference_tools.jsonl
+    prompt: default
+
+  - name: language_understanding
+    task_type: single_turn
+    path: data/language_understanding.jsonl
+    prompt: exact_reply
+
+  - name: sample_multiturn
+    task_type: multi_turn
+    path: data/sample_multiturn.jsonl
+    prompt: default
+
+  - name: sample_tools
+    task_type: tool_calling
+    path: data/sample_tools.jsonl
+    prompt: default

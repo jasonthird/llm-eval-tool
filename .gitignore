@@ -1,0 +1,13 @@
+.venv/
+.uv-cache/
+.pytest_cache/
+.coverage
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+results/*.jsonl
+!results/.gitkeep
+reports/*.md
+!reports/.gitkeep
+logs/

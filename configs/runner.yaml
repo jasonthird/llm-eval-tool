@@ -1,0 +1,13 @@
+runner:
+  concurrency:
+    global_limit: 10
+    per_model_limit: 5
+  retries:
+    max_attempts: 3
+    initial_backoff_seconds: 1.0
+    max_backoff_seconds: 10.0
+  timeouts:
+    request_timeout_seconds: 120
+    task_timeout_seconds: 300
+  tool_calling:
+    max_tool_steps: 4

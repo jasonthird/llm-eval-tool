@@ -1,0 +1,8 @@
+{"id":"math_001","task_type":"single_turn","question":"What is 17 * 23?","answer":"391","category":"arithmetic"}
+{"id":"math_002","task_type":"single_turn","question":"What is 144 / 12?","answer":"12","category":"arithmetic"}
+{"id":"math_003","task_type":"single_turn","question":"What is 2^8?","answer":"256","category":"arithmetic"}
+{"id":"math_004","task_type":"single_turn","question":"What is 19 * 37?","answer":"703","category":"arithmetic"}
+{"id":"math_005","task_type":"single_turn","question":"What is 15 + 27?","answer":"42","category":"arithmetic"}
+{"id":"math_006","task_type":"single_turn","question":"What is 987 - 654?","answer":"333","category":"arithmetic"}
+{"id":"math_007","task_type":"single_turn","question":"What is 12 * 12?","answer":"144","category":"arithmetic"}
+{"id":"math_008","task_type":"single_turn","question":"What is 3^5?","answer":"243","category":"arithmetic"}
