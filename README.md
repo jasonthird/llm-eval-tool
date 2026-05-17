@@ -1,4 +1,4 @@
-# Agent Eval Lab
+# llm-eval-tool
 
 Async evaluation harness for comparing language-model behavior on Greek language understanding, simple reasoning, multi-turn state tracking, Python tool use, and a small AIMO3 hard-math set.
 
@@ -217,7 +217,7 @@ Current local status:
 
 ## License
 
-Agent Eval Lab is released under the MIT License. See [LICENSE](LICENSE).
+llm-eval-tool is released under the MIT License. See [LICENSE](LICENSE).
 
 ## Dependency Credits
 
