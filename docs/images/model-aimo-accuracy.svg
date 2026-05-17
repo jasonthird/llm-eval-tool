@@ -57,5 +57,5 @@
 <text x="140" y="571" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#172033">Pro high partial</text>
 <rect x="438" y="559" width="14" height="14" rx="3" fill="#7c3aed"/>
 <text x="460" y="571" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#172033">Gemma 4</text>
-<text x="86" y="622" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b">Pro AIMO rows are partial; the full Pro active-suite run was interrupted by provider-side limits.</text>
+<text x="86" y="622" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b">Pro AIMO rows use the completed valid subset from the rerun because the full active-suite output included provider failures.</text>
 </svg>

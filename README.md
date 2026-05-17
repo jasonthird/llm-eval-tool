@@ -49,7 +49,7 @@ Takeaway: DeepSeek Flash high-thinking and DeepSeek Pro high-thinking tied on th
 
 ### Active Suite
 
-DeepSeek Flash and Gemma were run across the full active suite. DeepSeek Pro has valid language results and a completed hard-math subset; the full Pro active-suite run was interrupted by provider-side limits, so Pro is not shown as a full-suite number.
+DeepSeek Flash and Gemma were run across the full active suite. DeepSeek Pro was rerun, but the full active-suite run included many provider-side failure rows. The published Pro hard-math numbers therefore use the completed valid subset, while Pro language uses the clean OpenRouter language run.
 
 | Benchmark | DeepSeek Flash, thinking disabled | DeepSeek Flash, high thinking | Gemma 4 31B IT Nitro |
 |---|---:|---:|---:|
@@ -90,7 +90,7 @@ Takeaway: high-thinking Flash did best on the single-turn AIMO3 subset, but none
 
 DeepSeek V4 Flash is the strongest practical fit in these runs: it is excellent on the Greek language benchmark, clears the simple reasoning/tool smoke tests, and performs best among the full-suite runs.
 
-DeepSeek V4 Pro is strong on Greek language understanding, but in this setup it did not clearly beat Flash on the language set and its hard-math run was only partially completed.
+DeepSeek V4 Pro is strong on Greek language understanding, but in this setup it did not clearly beat Flash on the language set. Its published hard-math numbers come from the completed valid subset of the rerun, not a clean full active-suite pass.
 
 Gemma 4 31B IT Nitro is a useful smaller baseline. It clears the simple math, logic, multi-turn, and basic tool tasks, but trails DeepSeek on messy Greek/Greeklish language understanding and is also weak on the hard AIMO3 subset.
 
@@ -187,6 +187,9 @@ reports/deepseek_v4_flash_thinking_none_high_all_active_20260516.md
 results/openrouter_deepseek_v4_pro_none_high_language_20c_20260517.jsonl
 reports/openrouter_deepseek_v4_pro_none_high_language_20c_20260517.md
 
+results/deepseek_v4_pro_none_high_all_active_4h_15c_20260516.jsonl
+reports/deepseek_v4_pro_none_high_all_active_4h_15c_20260516.md
+
 results/deepseek_v4_pro_none_high_completed_subset_20260517.jsonl
 reports/deepseek_v4_pro_none_high_completed_subset_20260517.md
 
@@ -249,5 +252,5 @@ Transitive dependencies are pinned in `uv.lock`; the installed dependency scan f
 - The language benchmark is Greek-focused and intentionally includes messy/non-standard text.
 - Scoring is exact, normalized, or regex-based. It does not use judge-model grading.
 - The AIMO3 set is small and intentionally difficult.
-- DeepSeek Pro hard-math results are partial because the full run was interrupted by provider-side limits.
+- The published numbers are single-run results. We did not repeat runs with sampling to estimate variance or confidence intervals.
 - Local Python execution is for controlled evaluation tasks, not a hardened sandbox for untrusted code.
