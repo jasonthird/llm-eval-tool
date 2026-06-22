@@ -18,7 +18,7 @@ def new_run_id() -> str:
 
 
 class ChatMessage(BaseModel):
-    role: str
+    role: str = Field(min_length=1)
     content: str | None = None
     tool_call_id: str | None = None
     name: str | None = None
@@ -26,26 +26,26 @@ class ChatMessage(BaseModel):
 
 
 class BaseTask(BaseModel):
-    id: str
+    id: str = Field(min_length=1)
     task_type: TaskType
-    answer: str
+    answer: str = Field(min_length=1)
     answer_regex: str | None = None
-    category: str = "default"
+    category: str = Field(default="default", min_length=1)
 
 
 class SingleTurnTask(BaseTask):
     task_type: Literal["single_turn"]
-    question: str
+    question: str = Field(min_length=1)
 
 
 class MultiTurnTask(BaseTask):
     task_type: Literal["multi_turn"]
-    turns: list[ChatMessage]
+    turns: list[ChatMessage] = Field(min_length=1)
 
 
 class ToolCallingTask(BaseTask):
     task_type: Literal["tool_calling"]
-    question: str
+    question: str = Field(min_length=1)
     expected_tools: list[str] = Field(default_factory=list)
 
 
@@ -53,56 +53,68 @@ Task = SingleTurnTask | MultiTurnTask | ToolCallingTask
 
 
 class ModelConfig(BaseModel):
-    name: str
-    model: str
-    provider: str = "openai"
+    model_config = ConfigDict(validate_assignment=True)
+
+    name: str = Field(min_length=1)
+    model: str = Field(min_length=1)
+    provider: str = Field(default="openai", min_length=1)
     temperature: float = 0.0
-    max_tokens: int = 1024
-    concurrency_limit: int | None = None
+    max_tokens: int = Field(default=1024, gt=0)
+    concurrency_limit: int | None = Field(default=None, gt=0)
     extra: dict[str, Any] = Field(default_factory=dict)
 
 
 class ProviderConfig(BaseModel):
-    name: str
+    name: str = Field(min_length=1)
     api_key_env: str | None = None
     api_base: str | None = None
     extra: dict[str, Any] = Field(default_factory=dict)
 
 
 class PromptConfig(BaseModel):
-    name: str
-    system: str
-    user_template: str = "{question}"
+    name: str = Field(min_length=1)
+    system: str = Field(min_length=1)
+    user_template: str = Field(default="{question}", min_length=1)
 
 
 class BenchmarkConfig(BaseModel):
-    name: str
+    name: str = Field(min_length=1)
     task_type: TaskType
-    path: str
-    prompt: str = "default"
+    path: str = Field(min_length=1)
+    prompt: str = Field(default="default", min_length=1)
 
 
 class ConcurrencyConfig(BaseModel):
-    global_limit: int = 8
-    per_model_limit: int = 2
+    model_config = ConfigDict(validate_assignment=True)
+
+    global_limit: int = Field(default=8, gt=0)
+    per_model_limit: int = Field(default=2, gt=0)
 
 
 class RetryConfig(BaseModel):
-    max_attempts: int = 3
-    initial_backoff_seconds: float = 1.0
-    max_backoff_seconds: float = 10.0
+    model_config = ConfigDict(validate_assignment=True)
+
+    max_attempts: int = Field(default=3, gt=0)
+    initial_backoff_seconds: float = Field(default=1.0, ge=0)
+    max_backoff_seconds: float = Field(default=10.0, ge=0)
 
 
 class TimeoutConfig(BaseModel):
-    request_timeout_seconds: float = 120
-    task_timeout_seconds: float = 300
+    model_config = ConfigDict(validate_assignment=True)
+
+    request_timeout_seconds: float = Field(default=120, gt=0)
+    task_timeout_seconds: float = Field(default=300, gt=0)
 
 
 class ToolCallingConfig(BaseModel):
-    max_tool_steps: int = 4
+    model_config = ConfigDict(validate_assignment=True)
+
+    max_tool_steps: int = Field(default=4, gt=0)
 
 
 class RunnerConfig(BaseModel):
+    model_config = ConfigDict(validate_assignment=True)
+
     concurrency: ConcurrencyConfig = Field(default_factory=ConcurrencyConfig)
     retries: RetryConfig = Field(default_factory=RetryConfig)
     timeouts: TimeoutConfig = Field(default_factory=TimeoutConfig)
@@ -131,36 +143,36 @@ class AppConfig(BaseModel):
 
 
 class ToolTrace(BaseModel):
-    name: str
+    name: str = Field(min_length=1)
     args: dict[str, Any]
     output: Any = None
     error: str | None = None
-    latency_seconds: float = 0.0
+    latency_seconds: float = Field(default=0.0, ge=0)
 
 
 class EvaluationResult(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
-    run_id: str
+    run_id: str = Field(min_length=1)
     timestamp: datetime = Field(default_factory=utc_now)
-    task_id: str
+    task_id: str = Field(min_length=1)
     task_type: TaskType
-    benchmark_name: str
-    category: str
-    model_name: str
-    model: str
-    prompt_name: str
-    expected_answer: str
+    benchmark_name: str = Field(min_length=1)
+    category: str = Field(min_length=1)
+    model_name: str = Field(min_length=1)
+    model: str = Field(min_length=1)
+    prompt_name: str = Field(min_length=1)
+    expected_answer: str = Field(min_length=1)
     raw_response: str
     extracted_answer: str
     correct: bool
-    latency_seconds: float
-    prompt_tokens: int = 0
-    completion_tokens: int = 0
-    total_tokens: int = 0
-    cached_tokens: int = 0
-    reasoning_tokens: int = 0
-    cost_usd: float = 0.0
+    latency_seconds: float = Field(ge=0)
+    prompt_tokens: int = Field(default=0, ge=0)
+    completion_tokens: int = Field(default=0, ge=0)
+    total_tokens: int = Field(default=0, ge=0)
+    cached_tokens: int = Field(default=0, ge=0)
+    reasoning_tokens: int = Field(default=0, ge=0)
+    cost_usd: float = Field(default=0.0, ge=0)
     error: str | None = None
     conversation_trace: list[dict[str, Any]] = Field(default_factory=list)
     called_tools: list[str] = Field(default_factory=list)

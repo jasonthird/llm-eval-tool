@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from agent_eval.llm import LiteLLMClient, ModelResponse
-from agent_eval.schemas import ModelConfig, MultiTurnTask, PromptConfig, ProviderConfig
+from llm_eval.llm import LLMClient, ModelResponse
+from llm_eval.schemas import ModelConfig, MultiTurnTask, PromptConfig, ProviderConfig
 
 
 async def run_multi_turn(
@@ -11,7 +11,7 @@ async def run_multi_turn(
     prompt: PromptConfig,
     model_config: ModelConfig,
     provider_config: ProviderConfig,
-    client: LiteLLMClient,
+    client: LLMClient,
     timeout_seconds: float,
 ) -> tuple[ModelResponse, list[dict[str, Any]]]:
     messages: list[dict[str, Any]] = [{"role": "system", "content": prompt.system}]

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from agent_eval.reporting import load_results
+from llm_eval.reporting import load_results
 
 
 def list_result_files(results_dir: str | Path = "results") -> list[Path]:

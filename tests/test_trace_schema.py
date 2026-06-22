@@ -1,6 +1,6 @@
 import json
 
-from agent_eval.schemas import EvaluationResult
+from llm_eval.schemas import EvaluationResult
 
 
 def test_trace_schema_round_trip():

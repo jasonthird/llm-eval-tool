@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from agent_eval.llm import LiteLLMClient, ModelResponse
-from agent_eval.schemas import ModelConfig, PromptConfig, ProviderConfig, SingleTurnTask
+from llm_eval.llm import LLMClient, ModelResponse
+from llm_eval.schemas import ModelConfig, PromptConfig, ProviderConfig, SingleTurnTask
 
 
 def build_messages(task: SingleTurnTask, prompt: PromptConfig) -> list[dict[str, Any]]:
@@ -18,7 +18,7 @@ async def run_single_turn(
     prompt: PromptConfig,
     model_config: ModelConfig,
     provider_config: ProviderConfig,
-    client: LiteLLMClient,
+    client: LLMClient,
     timeout_seconds: float,
 ) -> tuple[ModelResponse, list[dict[str, Any]]]:
     messages = build_messages(task, prompt)

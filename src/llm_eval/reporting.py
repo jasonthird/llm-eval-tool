@@ -7,7 +7,7 @@ from pathlib import Path
 from statistics import mean
 from typing import Any
 
-from agent_eval.schemas import EvaluationResult
+from llm_eval.schemas import EvaluationResult
 
 
 def load_results(path: str | Path) -> list[EvaluationResult]:
@@ -119,7 +119,7 @@ def generate_markdown_report(results_path: str | Path, output_path: str | Path |
     ]
 
     lines = [
-        f"# Agent Eval Report: `{run_id}`",
+        f"# LLM Eval Report: `{run_id}`",
         "",
         f"- Generated: `{now}`",
         f"- Raw traces: `{results_path}`",

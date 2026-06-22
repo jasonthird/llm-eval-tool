@@ -1,7 +1,7 @@
 import pytest
 
-from agent_eval import tools
-from agent_eval.tools import execute_tool, openai_tool_schemas, tool_schema
+from llm_eval import tools
+from llm_eval.tools import ToolDefinition, ToolRegistry, execute_tool, openai_tool_schemas, tool_schema
 
 
 @pytest.mark.asyncio
@@ -55,3 +55,25 @@ def test_openai_tool_schema_shape():
     assert schemas[0]["type"] == "function"
     assert schemas[0]["function"]["name"] == "calculator_add"
     assert schemas[1]["function"]["parameters"]["properties"]["code"]["type"] == "string"
+
+
+@pytest.mark.asyncio
+async def test_tool_registry_executes_custom_definition():
+    def echo(value: str) -> str:
+        return value
+
+    registry = ToolRegistry([ToolDefinition(name="echo", function=echo, description="Echo a string.")])
+
+    assert registry.schemas(["echo", "missing"])[0]["function"]["name"] == "echo"
+    trace = await registry.execute("echo", {"value": "ok"})
+
+    assert trace.output == "ok"
+    assert trace.error is None
+
+
+@pytest.mark.asyncio
+async def test_tool_registry_reports_argument_binding_errors():
+    trace = await execute_tool("calculator_add", {"a": 1, "b": 2, "extra": 3})
+
+    assert trace.output is None
+    assert "unexpected keyword argument" in trace.error

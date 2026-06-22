@@ -1,0 +1,25 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+        exclude: ^(data/.*\.jsonl|docs/images/\.gitkeep|reports/\.gitkeep|results/\.gitkeep|src/llm_eval/flows/__init__\.py)$
+      - id: trailing-whitespace
+        exclude: ^(data/.*\.jsonl|docs/images/\.gitkeep|reports/\.gitkeep|results/\.gitkeep|src/llm_eval/flows/__init__\.py)$
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check
+        language: system
+        types: [python]
+        pass_filenames: true
+      - id: pytest
+        name: pytest
+        entry: uv run pytest -q
+        language: system
+        pass_filenames: false
+        always_run: true

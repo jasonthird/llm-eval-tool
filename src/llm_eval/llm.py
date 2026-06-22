@@ -5,9 +5,9 @@ import json
 import os
 import re
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Protocol
 
-from agent_eval.schemas import ModelConfig, ProviderConfig
+from llm_eval.schemas import ModelConfig, ProviderConfig
 
 
 @dataclass
@@ -30,6 +30,17 @@ class ModelResponse:
         self.cached_tokens += other.cached_tokens
         self.reasoning_tokens += other.reasoning_tokens
         self.cost_usd += other.cost_usd
+
+
+class LLMClient(Protocol):
+    async def complete(
+        self,
+        model_config: ModelConfig,
+        messages: list[dict[str, Any]],
+        timeout_seconds: float,
+        tools: list[dict[str, Any]] | None = None,
+        provider_config: ProviderConfig | None = None,
+    ) -> ModelResponse: ...
 
 
 class LiteLLMClient:
@@ -67,23 +78,7 @@ class LiteLLMClient:
             if api_key:
                 kwargs["api_key"] = api_key
         response = await acompletion(**kwargs)
-        message = response.choices[0].message
-        content = message.content or ""
-        tool_calls = [tc.model_dump() if hasattr(tc, "model_dump") else dict(tc) for tc in (message.tool_calls or [])]
-        reasoning_content = _get_value(message, "reasoning_content")
-        usage = _response_usage(response)
-        return ModelResponse(
-            content=content,
-            raw=response,
-            tool_calls=tool_calls,
-            reasoning_content=str(reasoning_content) if reasoning_content else None,
-            prompt_tokens=usage["prompt_tokens"],
-            completion_tokens=usage["completion_tokens"],
-            total_tokens=usage["total_tokens"],
-            cached_tokens=usage["cached_tokens"],
-            reasoning_tokens=usage["reasoning_tokens"],
-            cost_usd=_response_cost(response),
-        )
+        return parse_litellm_response(response)
 
     async def _mock_complete(
         self, messages: list[dict[str, Any]], tools: list[dict[str, Any]] | None
@@ -113,6 +108,35 @@ def _get_value(data: Any, key: str, default: Any = None) -> Any:
     if isinstance(data, dict):
         return data.get(key, default)
     return getattr(data, key, default)
+
+
+def parse_litellm_response(response: Any) -> ModelResponse:
+    choices = _get_value(response, "choices", []) or []
+    message = _get_value(choices[0], "message", {}) if choices else {}
+    content = _get_value(message, "content") or ""
+    tool_calls = [_dump_tool_call(tc) for tc in (_get_value(message, "tool_calls", []) or [])]
+    reasoning_content = _get_value(message, "reasoning_content")
+    usage = _response_usage(response)
+    return ModelResponse(
+        content=str(content),
+        raw=response,
+        tool_calls=tool_calls,
+        reasoning_content=str(reasoning_content) if reasoning_content else None,
+        prompt_tokens=usage["prompt_tokens"],
+        completion_tokens=usage["completion_tokens"],
+        total_tokens=usage["total_tokens"],
+        cached_tokens=usage["cached_tokens"],
+        reasoning_tokens=usage["reasoning_tokens"],
+        cost_usd=_response_cost(response),
+    )
+
+
+def _dump_tool_call(tool_call: Any) -> dict[str, Any]:
+    if hasattr(tool_call, "model_dump"):
+        return tool_call.model_dump()
+    if isinstance(tool_call, dict):
+        return dict(tool_call)
+    return dict(tool_call)
 
 
 def _int_value(value: Any) -> int:

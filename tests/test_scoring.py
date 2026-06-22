@@ -1,4 +1,4 @@
-from agent_eval.scoring import answer_correct, regex_matches, tool_selection_correct
+from llm_eval.scoring import answer_correct, regex_matches, tool_selection_correct
 
 
 def test_answer_correct_exact_and_numeric():
