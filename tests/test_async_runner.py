@@ -3,9 +3,9 @@ from pathlib import Path
 
 import pytest
 
-from agent_eval.config import load_config, load_tasks
-from agent_eval.schemas import AppConfig, BenchmarkConfig, ModelConfig, PromptConfig, RetryConfig, RunnerConfig
-from agent_eval.runner import run_evaluation
+from llm_eval.config import load_config, load_tasks
+from llm_eval.schemas import AppConfig, BenchmarkConfig, ModelConfig, PromptConfig, RetryConfig, RunnerConfig
+from llm_eval.runner import run_evaluation
 
 
 @pytest.mark.asyncio
@@ -95,7 +95,7 @@ async def test_runner_records_model_failures_after_retries(tmp_path):
         async def complete(self, *args, **kwargs):
             raise RuntimeError("provider down")
 
-    import agent_eval.runner as runner_module
+    import llm_eval.runner as runner_module
 
     original = runner_module.LiteLLMClient
     runner_module.LiteLLMClient = FailingClient

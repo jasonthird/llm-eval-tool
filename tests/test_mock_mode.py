@@ -1,6 +1,6 @@
 import pytest
 
-from agent_eval.runner import run_evaluation
+from llm_eval.runner import run_evaluation
 
 
 @pytest.mark.asyncio

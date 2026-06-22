@@ -3,10 +3,34 @@ from pathlib import Path
 import pytest
 from typer.testing import CliRunner
 
-from agent_eval import cli
-from agent_eval.cli import _configured_app, _run_cli, app, parse_filter_values
-from agent_eval.events import run_finished, task_finished
-from agent_eval.schemas import EvaluationResult
+from llm_eval import cli
+from llm_eval.cli import _configured_app, _run_cli, app, parse_filter_values
+from llm_eval.events import run_finished, task_finished
+from llm_eval.schemas import EvaluationResult
+
+
+def write_valid_config(root: Path, *, benchmark_path: str = "data/tasks.jsonl") -> None:
+    (root / "configs").mkdir()
+    (root / "data").mkdir()
+    (root / "configs" / "models.yaml").write_text(
+        "providers:\n  - name: mock\n    api_key_env: MOCK_KEY\n"
+        "models:\n  - name: mock\n    provider: mock\n    model: mock/model\n",
+        encoding="utf-8",
+    )
+    (root / "configs" / "prompts.yaml").write_text(
+        "prompts:\n  - name: default\n    system: system\n",
+        encoding="utf-8",
+    )
+    (root / "configs" / "benchmarks.yaml").write_text(
+        f"benchmarks:\n  - name: sample\n    task_type: single_turn\n    path: {benchmark_path}\n    prompt: default\n",
+        encoding="utf-8",
+    )
+    (root / "configs" / "tools.yaml").write_text("tools:\n  enabled:\n    - python_exec\n", encoding="utf-8")
+    (root / "configs" / "runner.yaml").write_text("runner: {}\n", encoding="utf-8")
+    (root / benchmark_path).write_text(
+        '{"id":"task","task_type":"single_turn","question":"Q?","answer":"A"}\n',
+        encoding="utf-8",
+    )
 
 
 def result() -> EvaluationResult:
@@ -63,6 +87,7 @@ async def test_run_cli_prints_paths(monkeypatch, tmp_path):
         None,
         None,
         None,
+        Path("."),
         tmp_path / "results.jsonl",
         tmp_path / "report.md",
     )
@@ -110,6 +135,8 @@ def test_cli_commands(monkeypatch, tmp_path):
             "4",
             "--context-size",
             "4",
+            "--config-root",
+            ".",
             "--output",
             str(tmp_path / "out.jsonl"),
         ],
@@ -121,9 +148,46 @@ def test_cli_commands(monkeypatch, tmp_path):
     assert list_result.exit_code == 0
     assert "Benchmarks" in list_result.output
 
+    validate_result = runner.invoke(app, ["validate"])
+    assert validate_result.exit_code == 0
+    assert "Configuration valid" in validate_result.output
+
     report_result = runner.invoke(app, ["report", "--results", str(tmp_path / "out.jsonl")])
     assert report_result.exit_code == 0
     assert calls["report"][0] == tmp_path / "out.jsonl"
+
+
+def test_browse_command(tmp_path):
+    runner = CliRunner()
+    results_path = tmp_path / "out.jsonl"
+    rows = [
+        result(),
+        result().model_copy(update={"task_id": "bad", "correct": False, "extracted_answer": "41"}),
+    ]
+    results_path.write_text("\n".join(row.model_dump_json() for row in rows) + "\n", encoding="utf-8")
+
+    found = runner.invoke(app, ["browse", "--results", str(results_path)])
+    assert found.exit_code == 0
+    assert "bad" in found.output
+
+    missing = runner.invoke(app, ["browse", "--results", str(tmp_path / "missing")])
+    assert missing.exit_code != 0
+
+
+def test_browse_defaults_to_latest_result(monkeypatch, tmp_path):
+    runner = CliRunner()
+    results_path = tmp_path / "out.jsonl"
+    results_path.write_text(result().model_dump_json() + "\n", encoding="utf-8")
+
+    monkeypatch.setattr(cli, "list_result_files", lambda: [results_path])
+    latest = runner.invoke(app, ["browse"])
+    assert latest.exit_code == 0
+    assert "Incorrect answers" in latest.output
+
+    monkeypatch.setattr(cli, "list_result_files", lambda: [])
+    empty = runner.invoke(app, ["browse"])
+    assert empty.exit_code == 1
+    assert "No result files found" in empty.output
 
 
 def test_configured_app_filters_and_overrides():
@@ -208,3 +272,48 @@ def test_configured_app_rejects_unknown_names():
             max_tokens=2048,
             context_size=65536,
         )
+
+
+@pytest.mark.parametrize(
+    ("override", "value"),
+    [
+        ("max_attempts", 0),
+        ("request_timeout", 0),
+        ("task_timeout", 0),
+        ("global_limit", 0),
+        ("per_model_limit", 0),
+        ("max_tokens", 0),
+    ],
+)
+def test_configured_app_rejects_invalid_positive_overrides(override, value):
+    kwargs = {
+        "benchmarks": None,
+        "models": None,
+        "max_attempts": None,
+        "request_timeout": None,
+        "task_timeout": None,
+        "global_limit": None,
+        "per_model_limit": None,
+        "max_tokens": None,
+        "context_size": None,
+    }
+    kwargs[override] = value
+    with pytest.raises(Exception, match="Invalid"):
+        _configured_app(**kwargs)
+
+
+def test_validate_command_uses_config_root_and_reports_errors(tmp_path):
+    write_valid_config(tmp_path)
+    runner = CliRunner()
+
+    valid = runner.invoke(app, ["validate", "--config-root", str(tmp_path)])
+    assert valid.exit_code == 0
+    assert "Configuration valid" in valid.output
+
+    (tmp_path / "configs" / "benchmarks.yaml").write_text(
+        "benchmarks:\n  - name: sample\n    task_type: single_turn\n    path: data/missing.jsonl\n    prompt: default\n",
+        encoding="utf-8",
+    )
+    invalid = runner.invoke(app, ["validate", "--config-root", str(tmp_path)])
+    assert invalid.exit_code != 0
+    assert "file does not exist" in invalid.output

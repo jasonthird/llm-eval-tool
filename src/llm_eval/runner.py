@@ -3,10 +3,10 @@ from __future__ import annotations
 import asyncio
 import time
 from pathlib import Path
-from typing import AsyncIterator
+from typing import Any, AsyncIterator, Awaitable, Callable
 
-from agent_eval.config import load_config, load_tasks
-from agent_eval.events import (
+from llm_eval.config import load_config, load_tasks
+from llm_eval.events import (
     EvalEvent,
     model_call_finished,
     model_call_started,
@@ -16,12 +16,12 @@ from agent_eval.events import (
     task_finished,
     task_started,
 )
-from agent_eval.extraction import extract_answer
-from agent_eval.flows.multi_turn import run_multi_turn
-from agent_eval.flows.single_turn import run_single_turn
-from agent_eval.flows.tool_calling import run_tool_calling
-from agent_eval.llm import LiteLLMClient
-from agent_eval.schemas import (
+from llm_eval.extraction import extract_answer
+from llm_eval.flows.multi_turn import run_multi_turn
+from llm_eval.flows.single_turn import run_single_turn
+from llm_eval.flows.tool_calling import run_tool_calling
+from llm_eval.llm import LLMClient, LiteLLMClient, ModelResponse
+from llm_eval.schemas import (
     AppConfig,
     BenchmarkConfig,
     EvaluationResult,
@@ -29,20 +29,30 @@ from agent_eval.schemas import (
     MultiTurnTask,
     SingleTurnTask,
     Task,
+    ToolTrace,
     ToolCallingTask,
     new_run_id,
 )
-from agent_eval.scoring import answer_correct, tool_selection_correct
-from agent_eval.trace_writer import AsyncTraceWriter
+from llm_eval.scoring import answer_correct, tool_selection_correct
+from llm_eval.trace_writer import AsyncTraceWriter
+
+
+FlowResult = tuple[ModelResponse, list[dict[str, Any]], list[ToolTrace], list[dict[str, Any]]]
+FlowHandler = Callable[..., Awaitable[FlowResult]]
 
 
 class EvaluationRunner:
     def __init__(self, config: AppConfig, mock_mode: bool = False):
         self.config = config
         self.mock_mode = mock_mode
-        self.client = LiteLLMClient(mock_mode=mock_mode)
+        self.client: LLMClient = LiteLLMClient(mock_mode=mock_mode)
         self.global_sem = asyncio.Semaphore(config.runner.concurrency.global_limit)
         self.model_sems: dict[str, asyncio.Semaphore] = {}
+        self._flow_handlers: dict[str, FlowHandler] = {
+            "single_turn": self._run_single_turn_flow,
+            "multi_turn": self._run_multi_turn_flow,
+            "tool_calling": self._run_tool_calling_flow,
+        }
 
     def _model_sem(self, model_config: ModelConfig) -> asyncio.Semaphore:
         limit = model_config.concurrency_limit or self.config.runner.concurrency.per_model_limit
@@ -131,7 +141,7 @@ class EvaluationRunner:
             async with self.global_sem, self._model_sem(model_config):
                 start = time.perf_counter()
                 response, conversation, tool_trace, invalid_tool_calls = await asyncio.wait_for(
-                    self._run_with_retries(run_id, task, prompt.name, benchmark, model_config, provider, emit),
+                    self._run_with_retries(run_id, task, prompt, model_config, provider, emit),
                     timeout=self.config.runner.timeouts.task_timeout_seconds,
                 )
             raw_response = response.content
@@ -194,49 +204,21 @@ class EvaluationRunner:
             await emit(task_failed(run_id, task_id=task.id, model_name=model_config.name, error=str(exc)))
             await emit(task_finished(run_id, result))
 
-    async def _run_with_retries(self, run_id, task, prompt_name, benchmark, model_config, provider_config, emit):
-        prompt = self.config.prompt_by_name(prompt_name)
+    async def _run_with_retries(self, run_id, task, prompt, model_config, provider_config, emit):
         retries = self.config.runner.retries
         backoff = retries.initial_backoff_seconds
         last_exc: Exception | None = None
         for attempt in range(1, retries.max_attempts + 1):
             try:
                 await emit(model_call_started(run_id, task_id=task.id, model_name=model_config.name, attempt=attempt))
-                if isinstance(task, SingleTurnTask):
-                    response, conversation = await run_single_turn(
-                        task,
-                        prompt,
-                        model_config,
-                        provider_config,
-                        self.client,
-                        self.config.runner.timeouts.request_timeout_seconds,
-                    )
-                    tool_trace = []
-                    invalid = []
-                elif isinstance(task, MultiTurnTask):
-                    response, conversation = await run_multi_turn(
-                        task,
-                        prompt,
-                        model_config,
-                        provider_config,
-                        self.client,
-                        self.config.runner.timeouts.request_timeout_seconds,
-                    )
-                    tool_trace = []
-                    invalid = []
-                else:
-                    response, conversation, tool_trace, invalid = await run_tool_calling(
-                        task,
-                        prompt,
-                        model_config,
-                        provider_config,
-                        self.client,
-                        self.config.runner.timeouts.request_timeout_seconds,
-                        self.config.tools_enabled,
-                        self.config.runner.tool_calling.max_tool_steps,
-                        run_id,
-                        emit,
-                    )
+                response, conversation, tool_trace, invalid = await self._run_task_flow(
+                    run_id,
+                    task,
+                    prompt,
+                    model_config,
+                    provider_config,
+                    emit,
+                )
                 await emit(model_call_finished(run_id, task_id=task.id, model_name=model_config.name, attempt=attempt))
                 return response, conversation, tool_trace, invalid
             except Exception as exc:
@@ -246,6 +228,52 @@ class EvaluationRunner:
                 await asyncio.sleep(backoff)
                 backoff = min(retries.max_backoff_seconds, backoff * 2)
         raise RuntimeError(f"Model call failed after {retries.max_attempts} attempts: {last_exc}") from last_exc
+
+    async def _run_task_flow(self, run_id, task, prompt, model_config, provider_config, emit) -> FlowResult:
+        handler = self._flow_handlers[task.task_type]
+        return await handler(run_id, task, prompt, model_config, provider_config, emit)
+
+    async def _run_single_turn_flow(self, _run_id, task, prompt, model_config, provider_config, _emit) -> FlowResult:
+        if not isinstance(task, SingleTurnTask):
+            raise TypeError(f"Expected SingleTurnTask for single_turn flow, got {type(task).__name__}")
+        response, conversation = await run_single_turn(
+            task,
+            prompt,
+            model_config,
+            provider_config,
+            self.client,
+            self.config.runner.timeouts.request_timeout_seconds,
+        )
+        return response, conversation, [], []
+
+    async def _run_multi_turn_flow(self, _run_id, task, prompt, model_config, provider_config, _emit) -> FlowResult:
+        if not isinstance(task, MultiTurnTask):
+            raise TypeError(f"Expected MultiTurnTask for multi_turn flow, got {type(task).__name__}")
+        response, conversation = await run_multi_turn(
+            task,
+            prompt,
+            model_config,
+            provider_config,
+            self.client,
+            self.config.runner.timeouts.request_timeout_seconds,
+        )
+        return response, conversation, [], []
+
+    async def _run_tool_calling_flow(self, run_id, task, prompt, model_config, provider_config, emit) -> FlowResult:
+        if not isinstance(task, ToolCallingTask):
+            raise TypeError(f"Expected ToolCallingTask for tool_calling flow, got {type(task).__name__}")
+        return await run_tool_calling(
+            task,
+            prompt,
+            model_config,
+            provider_config,
+            self.client,
+            self.config.runner.timeouts.request_timeout_seconds,
+            self.config.tools_enabled,
+            self.config.runner.tool_calling.max_tool_steps,
+            run_id,
+            emit,
+        )
 
 
 async def run_evaluation(

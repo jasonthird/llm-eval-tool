@@ -5,10 +5,11 @@ from typing import Any
 
 import pytest
 
-from agent_eval.flows.multi_turn import run_multi_turn
-from agent_eval.flows.tool_calling import run_tool_calling
-from agent_eval.llm import ModelResponse
-from agent_eval.schemas import ChatMessage, ModelConfig, MultiTurnTask, PromptConfig, ProviderConfig, ToolCallingTask
+from llm_eval.flows.multi_turn import run_multi_turn
+from llm_eval.flows.tool_calling import run_tool_calling
+from llm_eval.llm import ModelResponse
+from llm_eval.schemas import ChatMessage, ModelConfig, MultiTurnTask, PromptConfig, ProviderConfig, ToolCallingTask
+from llm_eval.tools import ToolDefinition, ToolRegistry
 
 
 @dataclass
@@ -133,4 +134,49 @@ async def test_tool_calling_returns_after_step_limit():
     )
     assert response.tool_calls
     assert tool_trace[0].output == "42"
+    assert invalid == []
+
+
+@pytest.mark.asyncio
+async def test_tool_calling_accepts_custom_registry():
+    task = ToolCallingTask(id="tool", task_type="tool_calling", question="calculate", answer="custom")
+    events = []
+
+    def custom_tool(value: str) -> str:
+        return f"custom:{value}"
+
+    async def emit(event):
+        events.append(event)
+
+    response, _messages, tool_trace, invalid = await run_tool_calling(
+        task,
+        PromptConfig(name="default", system="system"),
+        ModelConfig(name="mock", model="mock/model"),
+        ProviderConfig(name="mock"),
+        FakeClient(
+            [
+                ModelResponse(
+                    "",
+                    tool_calls=[
+                        {
+                            "id": "call",
+                            "type": "function",
+                            "function": {"name": "custom_tool", "arguments": '{"value": "ok"}'},
+                        }
+                    ],
+                )
+            ]
+        ),
+        timeout_seconds=1,
+        enabled_tools=["custom_tool"],
+        max_tool_steps=0,
+        run_id="run",
+        emit=emit,
+        tool_registry=ToolRegistry(
+            [ToolDefinition(name="custom_tool", function=custom_tool, description="Custom tool.")]
+        ),
+    )
+
+    assert response.tool_calls
+    assert tool_trace[0].output == "custom:ok"
     assert invalid == []

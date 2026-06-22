@@ -1,9 +1,9 @@
 import json
 
-from agent_eval.reporting import generate_markdown_report, load_results, summarize
-from agent_eval.schemas import EvaluationResult, ToolTrace
-from agent_eval.result_browser import incorrect_answers_text, list_result_files, tool_failures_text
-from agent_eval.stats import LiveStats
+from llm_eval.reporting import generate_markdown_report, load_results, summarize
+from llm_eval.schemas import EvaluationResult, ToolTrace
+from llm_eval.result_browser import incorrect_answers_text, list_result_files, tool_failures_text
+from llm_eval.stats import LiveStats
 
 
 def make_result(**overrides):

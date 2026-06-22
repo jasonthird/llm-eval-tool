@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 from pathlib import Path
 
-from agent_eval.schemas import EvaluationResult
+from llm_eval.schemas import EvaluationResult
 
 
 class AsyncTraceWriter:

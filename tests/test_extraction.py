@@ -1,4 +1,4 @@
-from agent_eval.extraction import as_decimal, extract_answer, normalize_answer
+from llm_eval.extraction import as_decimal, extract_answer, normalize_answer
 
 
 def test_extract_prefers_final_answer():

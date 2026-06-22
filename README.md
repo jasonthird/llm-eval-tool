@@ -114,13 +114,13 @@ Model config references environment variable names only. Secrets should not be c
 List available config:
 
 ```bash
-uv run agent-eval list-config
+uv run llm-eval list-config
 ```
 
 Run the full active suite for the configured models:
 
 ```bash
-uv run agent-eval run \
+uv run llm-eval run \
   --model deepseek-v4-flash-none \
   --model deepseek-v4-flash-high \
   --model openrouter-gemma-4-31b-it-nitro \
@@ -130,7 +130,7 @@ uv run agent-eval run \
 Run only the Greek language-understanding benchmark:
 
 ```bash
-uv run agent-eval run \
+uv run llm-eval run \
   --benchmark language_understanding \
   --model deepseek-v4-flash-none \
   --model deepseek-v4-flash-high \
@@ -143,13 +143,26 @@ uv run agent-eval run \
 Generate a Markdown report from a JSONL result file:
 
 ```bash
-uv run agent-eval report --results results/your_run.jsonl
+uv run llm-eval report --results results/your_run.jsonl
 ```
 
 Mock mode works without API keys:
 
 ```bash
-uv run agent-eval run --mock
+uv run llm-eval run --mock
+```
+
+Validate configuration and benchmark files without making model calls:
+
+```bash
+uv run llm-eval validate
+```
+
+Use `--config-root` when running from a checkout that is not the repository root, or when validating a copied config/data tree. Relative config paths are resolved from that root before benchmark JSONL files are loaded.
+
+```bash
+uv run llm-eval validate --config-root /path/to/eval-config
+uv run llm-eval run --config-root /path/to/eval-config --mock
 ```
 
 ## Project Structure
@@ -165,16 +178,115 @@ data/
   *.jsonl              # benchmark task files
 docs/images/
   *.svg                # published comparison charts
-src/agent_eval/
+src/llm_eval/
   cli.py               # Typer CLI
+  config.py            # config loading, path resolution, validation
+  schemas.py           # Pydantic config, task, trace, and result schemas
   runner.py            # async evaluation runner
   flows/               # single-turn, multi-turn, tool-calling flows
   llm.py               # LiteLLM client and usage parsing
+  tools.py             # tool registry and local tool implementations
+  trace_writer.py      # async JSONL result writer
   scoring.py           # exact/normalized/regex scoring
   reporting.py         # Markdown reports
 tests/
   test_*.py            # unit tests
 ```
+
+## Architecture Overview
+
+The harness is intentionally small and file-oriented. Configuration YAML points to JSONL benchmark files, each task is validated into a typed schema, and every model/task result is appended to a JSONL trace before a Markdown report is generated.
+
+```mermaid
+flowchart LR
+  CLI[Typer CLI] --> Load[load_config]
+  Load --> Resolve[ConfigPathResolver]
+  Resolve --> Validate[validate_config]
+  Validate --> Runner[EvaluationRunner]
+  Runner --> Dispatch[task type dispatch]
+  Dispatch --> Single[single turn flow]
+  Dispatch --> Multi[multi turn flow]
+  Dispatch --> Tools[tool calling flow]
+  Single --> Client[LLMClient]
+  Multi --> Client
+  Tools --> Client
+  Tools --> Registry[ToolRegistry]
+  Registry --> Python[python_exec]
+  Client --> Trace[AsyncTraceWriter JSONL]
+  Trace --> Report[Markdown report]
+```
+
+Key maintainability seams:
+
+- The CLI applies overrides and calls config validation before running evaluations.
+- `ConfigPathResolver` keeps relative config and benchmark paths portable through `--config-root`.
+- `validate_config()` checks duplicate names, model/provider references, benchmark/prompt references, task JSONL validity, task type consistency, duplicate task ids, expected tool availability, and configured tool availability.
+- `EvaluationRunner` owns concurrency, retries, task filtering, trace writing, and flow dispatch.
+- Flow modules keep prompt/message construction separate for single-turn, multi-turn, and tool-calling tasks.
+- `LLMClient` is a protocol boundary; `LiteLLMClient` implements real provider calls and mock mode.
+- `ToolRegistry` owns OpenAI-compatible tool schemas and execution, while tool traces are stored with evaluation results.
+
+## Configuration Validation
+
+Run validation before committing config, prompt, benchmark, or tool changes:
+
+```bash
+uv run llm-eval validate
+```
+
+The command is a dry run: it loads config, resolves benchmark paths, parses every referenced task JSONL file, checks configured references and tool availability, and exits before scheduling model calls or writing results. It is the fastest way to catch schema, path, and registry mistakes.
+
+`--config-root` is available on `run`, `validate`, and `list-config`. The default is the current directory. When provided, default config files are read from `<root>/configs/*.yaml`, and relative benchmark paths inside those config files are resolved from the same root. Absolute paths remain absolute.
+
+Examples:
+
+```bash
+uv run llm-eval validate --config-root .
+uv run llm-eval list-config --config-root .
+uv run llm-eval run --config-root . --benchmark sample_math --mock
+```
+
+CLI overrides such as `--max-attempts`, `--request-timeout`, `--task-timeout`, `--global-limit`, `--per-model-limit`, `--max-tokens`, and `--context-size` are assignment-validated before the run starts. `--max-tokens` and `--context-size` set the same model budget; provide only one unless the values match.
+
+## Task JSONL Schemas
+
+Each benchmark file is newline-delimited JSON. Blank lines are ignored. Every nonblank line must parse as one task whose `task_type` matches the `task_type` declared for that benchmark in `configs/benchmarks.yaml`.
+
+Common fields:
+
+| Field | Required | Notes |
+|---|---|---|
+| `id` | yes | Unique within the benchmark file. |
+| `task_type` | yes | One of `single_turn`, `multi_turn`, or `tool_calling`. |
+| `answer` | yes | Expected final answer used by scoring. |
+| `answer_regex` | no | Optional regex accepted by scoring instead of exact normalized answer. |
+| `category` | no | Defaults to `default`; usable with `--include` and `--exclude`. |
+
+Single-turn tasks provide a question string:
+
+```json
+{"id":"math_001","task_type":"single_turn","category":"arithmetic","question":"What is 17 + 25?","answer":"42"}
+```
+
+Multi-turn tasks provide prior chat messages. The runner sends these turns directly to the model flow and scores the final model response:
+
+```json
+{"id":"state_001","task_type":"multi_turn","turns":[{"role":"user","content":"Remember the code word: iris."},{"role":"assistant","content":"Noted."},{"role":"user","content":"What code word did I give you?"}],"answer":"iris"}
+```
+
+Tool-calling tasks provide a question and may list expected tools. Expected tools must be enabled in `configs/tools.yaml` and registered by `ToolRegistry`:
+
+```json
+{"id":"tool_001","task_type":"tool_calling","category":"python","question":"Use Python to compute 19 * 23. Return only the number.","answer":"437","expected_tools":["python_exec"]}
+```
+
+Validation expectations:
+
+- Required strings must be non-empty.
+- Task ids must not repeat within a benchmark file.
+- `task_type` in each row must match the benchmark declaration.
+- `expected_tools` may only reference enabled and registered tools.
+- Invalid JSON or schema errors are reported with the benchmark path and line number.
 
 ## Artifacts
 
@@ -213,18 +325,37 @@ docs/images/model-language-latency.svg
 docs/images/model-aimo-accuracy.svg
 ```
 
-## Testing
+## Developer Workflow
 
 ```bash
-UV_CACHE_DIR=.uv-cache uv run pytest -q
-UV_CACHE_DIR=.uv-cache uv run vulture src tests --min-confidence 80
+uv run pytest -q
+uv run ruff check src tests
+uv run --extra dev pre-commit run --all-files
 ```
 
-Current local status:
+Use `uv run pytest -q` for the unit suite, including branch coverage enforcement from `pyproject.toml`. Use `uv run ruff check src tests` for lint checks. Run pre-commit before opening a pull request when Markdown, YAML, TOML, Python, or benchmark files changed; it runs standard file hygiene checks plus Ruff and pytest.
+
+CI runs on pull requests and pushes to `main` for Python 3.11 and 3.12. The workflow installs dependencies with `uv sync --extra dev`, then runs Ruff and pytest. If CI fails, reproduce the failing command locally before updating code or documentation.
+
+Recent Phase 5 validation status:
 
 - `46 passed`
 - `100%` test coverage
-- `vulture` clean
+- `uv run ruff check src tests` passed
+- `uv run --extra dev pre-commit run --all-files` passed
+
+## Security Note
+
+The `python_exec` tool executes local Python code generated during tool-use evaluations. It runs snippets with the current Python interpreter in isolated mode (`-I`), inside a temporary working directory, with stdin disabled and a short timeout. Those controls reduce accidental damage, but they are not a full security sandbox.
+
+Operational recommendations:
+
+- Treat `python_exec` as trusted-local-only infrastructure. Do not expose it through a public API, shared bot, web app, or multi-tenant service.
+- Run tool-calling evaluations in an environment without production secrets, cloud credentials, SSH agents, or sensitive local files.
+- Prefer disposable containers, short-lived virtual machines, or locked-down local users for untrusted benchmark prompts or model providers.
+- Keep `python_exec` disabled in `configs/tools.yaml` unless a benchmark explicitly needs it.
+- Review tool traces in result JSONL files and reports when investigating unexpected model behavior.
+- Do not assume timeout, temporary directories, or Python isolated mode prevent all filesystem, CPU, memory, or network misuse.
 
 ## License
 
@@ -237,7 +368,6 @@ Runtime dependencies:
 | Dependency | License |
 |---|---|
 | LiteLLM | MIT |
-| PocketFlow | MIT |
 | Pydantic | MIT |
 | python-dotenv | BSD-3-Clause |
 | PyYAML | MIT |

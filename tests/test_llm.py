@@ -4,9 +4,16 @@ from types import SimpleNamespace
 
 import pytest
 
-from agent_eval.llm import LiteLLMClient, _float_value, _int_value, _mock_answer, _mock_tool_for_question
-from agent_eval.schemas import ModelConfig, ProviderConfig
-from agent_eval.tools import openai_tool_schemas
+from llm_eval.llm import (
+    LiteLLMClient,
+    _float_value,
+    _int_value,
+    _mock_answer,
+    _mock_tool_for_question,
+    parse_litellm_response,
+)
+from llm_eval.schemas import ModelConfig, ProviderConfig
+from llm_eval.tools import openai_tool_schemas
 
 
 class DumpableToolCall:
@@ -129,6 +136,30 @@ def test_mock_answer_paths():
 def test_usage_value_helpers_ignore_bad_values():
     assert _int_value("not-int") == 0
     assert _float_value("not-float") == 0.0
+
+
+def test_parse_litellm_response_handles_empty_choices():
+    response = parse_litellm_response(SimpleNamespace(choices=[], usage=None))
+
+    assert response.content == ""
+    assert response.tool_calls == []
+    assert response.total_tokens == 0
+
+
+def test_parse_litellm_response_handles_partial_dict_message():
+    raw = {
+        "choices": [{"message": {"content": 123, "tool_calls": [{"id": "call"}]}}],
+        "usage": {"prompt_tokens": "bad", "completion_tokens": "2", "total_tokens": "2"},
+        "response_cost": "bad",
+    }
+
+    response = parse_litellm_response(raw)
+
+    assert response.content == "123"
+    assert response.tool_calls == [{"id": "call"}]
+    assert response.prompt_tokens == 0
+    assert response.completion_tokens == 2
+    assert response.cost_usd == 0.0
 
 
 @pytest.mark.asyncio

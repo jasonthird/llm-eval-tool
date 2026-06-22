@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 
-from agent_eval.extraction import as_decimal, normalize_answer
+from llm_eval.extraction import as_decimal, normalize_answer
 
 
 def answer_correct(expected: str, extracted: str, expected_regex: str | None = None) -> bool:
