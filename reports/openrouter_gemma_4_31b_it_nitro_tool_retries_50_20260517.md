@@ -1,6 +1,6 @@
-# Agent Eval Report: `run_20260516_234412_cdc5fcb3`
+# LLM Eval Report: `run_20260516_234412_cdc5fcb3`
 
-- Generated: `2026-05-17T00:04:13.339338+00:00`
+- Generated: `2026-06-27T07:59:08.930570+00:00`
 - Raw traces: `results/openrouter_gemma_4_31b_it_nitro_tool_retries_50_20260517.jsonl`
 - Task results: `12`
 - Overall accuracy: `25.0%`

@@ -1,9 +1,9 @@
-# Agent Eval Report: `run_20260516_215445_e3dc013e`
+# LLM Eval Report: `run_20260516_215445_e3dc013e`
 
-- Generated: `2026-05-16T21:57:58.841340+00:00`
+- Generated: `2026-06-27T07:59:08.885640+00:00`
 - Raw traces: `results/openrouter_deepseek_v4_pro_none_high_language_20c_20260517.jsonl`
 - Task results: `216`
-- Overall accuracy: `94.9%`
+- Overall accuracy: `97.7%`
 - Errors: `0`
 - Total task latency: `3636.605s`
 - Average task latency: `16.836s`
@@ -16,16 +16,16 @@
 
 ## Accuracy by Task Type
 
-- `single_turn`: `94.9%`
+- `single_turn`: `97.7%`
 
 ## Accuracy by Model
 
-- `openrouter-deepseek-v4-pro-high`: `96.3%`
-- `openrouter-deepseek-v4-pro-none`: `93.5%`
+- `openrouter-deepseek-v4-pro-high`: `98.1%`
+- `openrouter-deepseek-v4-pro-none`: `97.2%`
 
 ## Accuracy by Prompt
 
-- `exact_reply`: `94.9%`
+- `exact_reply`: `97.7%`
 
 ## Average Latency by Model
 
@@ -61,15 +61,9 @@
 
 | Task | Type | Model | Expected | Extracted | Error |
 |---|---|---|---|---|---|
-| `language_understanding_066` | `single_turn` | `openrouter-deepseek-v4-pro-none` | `για αρχη θα τα ανεβασω ετσι και απο δευτερα που θα εχω τελειωσει σιγουρα με αυτα που επειγουν για το launch θα το τσεκαρω` | `Σκέφτεται να τα ανεβάσει ως έχουν αρχικά και από Δευτέρα, αφού τελειώσει με τα επείγοντα για το launch, θα το ελέγξει` | `` |
-| `language_understanding_058` | `single_turn` | `openrouter-deepseek-v4-pro-high` | `μικρη λεπτομερια αλλα το κουμπι στην δημιουργια χημικων γραφει απλα δημιουργια` | `το κουμπι στην δημιουργια χημικων γραφει απλα δημιουργια` | `` |
-| `language_understanding_058` | `single_turn` | `openrouter-deepseek-v4-pro-none` | `μικρη λεπτομερια αλλα το κουμπι στην δημιουργια χημικων γραφει απλα δημιουργια` | `το κουμπι στην δημιουργια χημικων γραφει απλα δημιουργια` | `` |
-| `language_understanding_174` | `single_turn` | `openrouter-deepseek-v4-pro-none` | `Τη Δευτερα θα σας πω επισης πως θα κανουμε απο εδω και περα τα tasks, δλδ πως θα φτανει ενα task να ειναι branch που γινεται merge request` | `πως θα κανουμε απο εδω και περα τα tasks, δλδ πως θα φτανει ενα task να ειναι branch που γινεται merge request` | `` |
 | `language_understanding_178` | `single_turn` | `openrouter-deepseek-v4-pro-none` | `μόλις 17 εκατ. λιρών` | `17 εκατομμύρια λίρες` | `` |
 | `language_understanding_168` | `single_turn` | `openrouter-deepseek-v4-pro-high` | `και μου ελεγες κατι για να μανατζαρω τις ωρες μου?` | `μανατζαρω τις ωρες μου` | `` |
 | `language_understanding_169` | `single_turn` | `openrouter-deepseek-v4-pro-none` | `στα τέλη του 19ου αιώνα στο Ζίχοβο ("σήμ." Ζίβοβο) Μοριχόβου της Μακεδονίας` | `Ζίχοβο` | `` |
-| `language_understanding_214` | `single_turn` | `openrouter-deepseek-v4-pro-high` | `καθομαι και εγω σα μαλακας και κανω κανονικα τη διαδικασια` | `κανω κανονικα τη διαδικασια` | `` |
-| `language_understanding_221` | `single_turn` | `openrouter-deepseek-v4-pro-none` | `to vraveio Emmy, to Screen Actors Guild Award` | `Emmy και Screen Actors Guild Award` | `` |
 | `language_understanding_263` | `single_turn` | `openrouter-deepseek-v4-pro-none` | `πέντε φορές` | `5` | `` |
 | `language_understanding_263` | `single_turn` | `openrouter-deepseek-v4-pro-high` | `πέντε φορές` | `5` | `` |
 

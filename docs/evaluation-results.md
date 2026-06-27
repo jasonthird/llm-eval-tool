@@ -48,12 +48,13 @@ docs/images/model-aimo-accuracy.svg
 ## Local Test Suite
 
 - Command: `UV_CACHE_DIR=.uv-cache uv run pytest -q`
-- Result: `46 passed`
-- Coverage: `100.00%`
+- Result: `70 passed`
+- Coverage: `97.99%`
 
 ## Dataset Notes
 
 - `language_understanding` is Greek-focused and includes Greek, Greeklish, mixed Greek/Latin, and imperfect/non-standard Greek.
+- Language scoring uses extracted-answer checks plus raw-response regex, normalized containment, and deterministic Greek/Greeklish semantic-token matching. It does not use a judge model.
 - `sample_math` has 8 arithmetic tasks.
 - `sample_logic` has 6 ordering, parity, and deductive logic tasks.
 - AIMO3 reference tasks are intentionally hard and are reported separately from language-understanding conclusions.

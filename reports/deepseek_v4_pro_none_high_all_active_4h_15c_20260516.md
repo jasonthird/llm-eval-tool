@@ -1,9 +1,9 @@
-# Agent Eval Report: `run_20260516_153111_9afdc14e`
+# LLM Eval Report: `run_20260516_153111_9afdc14e`
 
-- Generated: `2026-05-16T19:36:06.905520+00:00`
+- Generated: `2026-06-27T07:59:08.924139+00:00`
 - Raw traces: `results/deepseek_v4_pro_none_high_all_active_4h_15c_20260516.jsonl`
 - Task results: `312`
-- Overall accuracy: `11.2%`
+- Overall accuracy: `12.2%`
 - Errors: `232`
 - Total task latency: `182121.860s`
 - Average task latency: `583.724s`
@@ -17,17 +17,17 @@
 ## Accuracy by Task Type
 
 - `multi_turn`: `20.8%`
-- `single_turn`: `11.0%`
-- `tool_calling`: `4.2%`
+- `single_turn`: `11.4%`
+- `tool_calling`: `12.5%`
 
 ## Accuracy by Model
 
 - `deepseek-v4-pro-high`: `11.5%`
-- `deepseek-v4-pro-none`: `10.9%`
+- `deepseek-v4-pro-none`: `12.8%`
 
 ## Accuracy by Prompt
 
-- `default`: `36.5%`
+- `default`: `39.6%`
 - `exact_reply`: `0.0%`
 
 ## Average Latency by Model
@@ -70,7 +70,6 @@
 | `aimo3_ref_006` | `single_turn` | `deepseek-v4-pro-none` | `32951` | `2` | `` |
 | `aimo3_ref_007` | `single_turn` | `deepseek-v4-pro-none` | `57447` | `10` | `` |
 | `aimo3_ref_004` | `single_turn` | `deepseek-v4-pro-none` | `580` | `291` | `` |
-| `aimo3_ref_008` | `single_turn` | `deepseek-v4-pro-none` | `32193` | `5` | `` |
 | `aimo3_ref_003` | `single_turn` | `deepseek-v4-pro-none` | `336` | `2002` | `` |
 | `aimo3_ref_009` | `single_turn` | `deepseek-v4-pro-none` | `160` | `62` | `` |
 | `aimo3_ref_005` | `single_turn` | `deepseek-v4-pro-none` | `21818` | `24288` | `` |
@@ -87,7 +86,6 @@
 | `aimo3_mt_010` | `multi_turn` | `deepseek-v4-pro-none` | `8687` | `49379` | `` |
 | `aimo3_tool_001` | `tool_calling` | `deepseek-v4-pro-none` | `50` | `search` | `` |
 | `aimo3_tool_001` | `tool_calling` | `deepseek-v4-pro-high` | `50` | `` | `` |
-| `aimo3_tool_002` | `tool_calling` | `deepseek-v4-pro-none` | `520` | `500` | `` |
 | `aimo3_tool_002` | `tool_calling` | `deepseek-v4-pro-high` | `520` | `` | `` |
 | `aimo3_mt_005` | `multi_turn` | `deepseek-v4-pro-high` | `21818` | `` | `` |
 | `aimo3_tool_003` | `tool_calling` | `deepseek-v4-pro-none` | `336` | `` | `` |
@@ -95,7 +93,6 @@
 | `aimo3_tool_003` | `tool_calling` | `deepseek-v4-pro-high` | `336` | `` | `` |
 | `aimo3_tool_005` | `tool_calling` | `deepseek-v4-pro-none` | `21818` | `-1` | `` |
 | `aimo3_mt_007` | `multi_turn` | `deepseek-v4-pro-high` | `57447` | `` | `` |
-| `aimo3_tool_006` | `tool_calling` | `deepseek-v4-pro-none` | `32951` | `2` | `` |
 | `aimo3_tool_006` | `tool_calling` | `deepseek-v4-pro-high` | `32951` | `` | `` |
 | `aimo3_tool_007` | `tool_calling` | `deepseek-v4-pro-none` | `57447` | `1` | `` |
 | `aimo3_mt_009` | `multi_turn` | `deepseek-v4-pro-high` | `160` | `` | `` |

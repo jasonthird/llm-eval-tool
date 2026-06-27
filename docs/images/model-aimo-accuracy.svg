@@ -2,7 +2,7 @@
 <title id="title">AIMO3 Hard-Math Accuracy</title>
 <desc id="desc">Accuracy on a 10-task AIMO3 hard-math subset for DeepSeek V4 Flash, DeepSeek V4 Pro, and Gemma 4 31B IT Nitro.</desc>
 <rect width="100%" height="100%" fill="#ffffff"/>
-<text x="42" y="48" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25" font-weight="750" fill="#172033">AIMO3 Hard-Math Subset</text>
+<text x="42" y="48" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25" fill="#172033" font-weight="750">AIMO3 Hard-Math Subset</text>
 <text x="42" y="76" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" fill="#64748b">A small stress test: single-turn, multi-turn, and local Python-tool variants.</text>
 <line x1="86" y1="448.0" x2="1094" y2="448.0" stroke="#e5e7eb"/>
 <text x="72" y="452.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">0%</text>
@@ -14,39 +14,39 @@
 <text x="72" y="204.5" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">75%</text>
 <line x1="86" y1="118.0" x2="1094" y2="118.0" stroke="#e5e7eb"/>
 <text x="72" y="122.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#64748b" text-anchor="end">100%</text>
-<text x="233.3" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Single turn</text>
+<text x="233.2" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" fill="#172033" font-weight="700" text-anchor="middle">Single turn</text>
 <rect x="86.0" y="349.0" width="51.7" height="99.0" rx="5" fill="#2563eb"/>
-<text x="111.9" y="341.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">30%</text>
+<text x="111.8" y="341.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">30%</text>
 <rect x="146.7" y="250.0" width="51.7" height="198.0" rx="5" fill="#059669"/>
-<text x="172.6" y="242.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">60%</text>
-<rect x="207.5" y="415.0" width="51.7" height="33.0" rx="5" fill="#d97706"/>
-<text x="233.3" y="407.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">10%</text>
-<rect x="268.2" y="415.0" width="51.7" height="33.0" rx="5" fill="#dc2626"/>
-<text x="294.1" y="407.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">10%</text>
-<rect x="328.9" y="316.0" width="51.7" height="132.0" rx="5" fill="#7c3aed"/>
-<text x="354.8" y="308.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">40%</text>
-<text x="590.0" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Multi-turn</text>
-<rect x="442.7" y="316.0" width="51.7" height="132.0" rx="5" fill="#2563eb"/>
-<text x="468.5" y="308.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">40%</text>
-<rect x="503.4" y="316.0" width="51.7" height="132.0" rx="5" fill="#059669"/>
-<text x="529.3" y="308.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">40%</text>
-<rect x="564.1" y="382.0" width="51.7" height="66.0" rx="5" fill="#d97706"/>
-<text x="590.0" y="374.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">20%</text>
-<rect x="624.9" y="349.0" width="51.7" height="99.0" rx="5" fill="#dc2626"/>
-<text x="650.7" y="341.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">30%</text>
-<rect x="685.6" y="316.0" width="51.7" height="132.0" rx="5" fill="#7c3aed"/>
-<text x="711.5" y="308.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">40%</text>
-<text x="946.7" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#172033" text-anchor="middle">Python tools</text>
-<rect x="799.3" y="415.0" width="51.7" height="33.0" rx="5" fill="#2563eb"/>
-<text x="825.2" y="407.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">10%</text>
-<rect x="860.1" y="448.0" width="51.7" height="0.0" rx="5" fill="#059669"/>
-<text x="885.9" y="440.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">0%</text>
-<rect x="920.8" y="448.0" width="51.7" height="0.0" rx="5" fill="#d97706"/>
-<text x="946.7" y="440.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">0%</text>
-<rect x="981.5" y="392.9" width="51.7" height="55.1" rx="5" fill="#dc2626"/>
-<text x="1007.4" y="384.9" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">16.7%</text>
-<rect x="1042.3" y="415.0" width="51.7" height="33.0" rx="5" fill="#7c3aed"/>
-<text x="1068.1" y="407.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" font-weight="750" fill="#172033" text-anchor="middle">10%</text>
+<text x="172.5" y="242.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">60%</text>
+<rect x="207.4" y="382.0" width="51.7" height="66.0" rx="5" fill="#d97706"/>
+<text x="233.2" y="374.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">20%</text>
+<rect x="268.1" y="415.0" width="51.7" height="33.0" rx="5" fill="#dc2626"/>
+<text x="294.0" y="407.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">10%</text>
+<rect x="328.8" y="316.0" width="51.7" height="132.0" rx="5" fill="#7c3aed"/>
+<text x="354.7" y="308.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">40%</text>
+<text x="589.8" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" fill="#172033" font-weight="700" text-anchor="middle">Multi-turn</text>
+<rect x="442.5" y="283.0" width="51.7" height="165.0" rx="5" fill="#2563eb"/>
+<text x="468.4" y="275.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">50%</text>
+<rect x="503.2" y="316.0" width="51.7" height="132.0" rx="5" fill="#059669"/>
+<text x="529.0" y="308.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">40%</text>
+<rect x="563.9" y="382.0" width="51.7" height="66.0" rx="5" fill="#d97706"/>
+<text x="589.8" y="374.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">20%</text>
+<rect x="624.6" y="349.0" width="51.7" height="99.0" rx="5" fill="#dc2626"/>
+<text x="650.5" y="341.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">30%</text>
+<rect x="685.3" y="283.0" width="51.7" height="165.0" rx="5" fill="#7c3aed"/>
+<text x="711.1" y="275.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">50%</text>
+<text x="946.2" y="482" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" fill="#172033" font-weight="700" text-anchor="middle">Python tools</text>
+<rect x="799.0" y="349.0" width="51.7" height="99.0" rx="5" fill="#2563eb"/>
+<text x="824.9" y="341.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">30%</text>
+<rect x="859.7" y="448.0" width="51.7" height="0.0" rx="5" fill="#059669"/>
+<text x="885.6" y="440.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">0%</text>
+<rect x="920.4" y="353.6" width="51.7" height="94.4" rx="5" fill="#d97706"/>
+<text x="946.2" y="345.6" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">28.6%</text>
+<rect x="981.1" y="392.9" width="51.7" height="55.1" rx="5" fill="#dc2626"/>
+<text x="1007.0" y="384.9" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">16.7%</text>
+<rect x="1041.8" y="415.0" width="51.7" height="33.0" rx="5" fill="#7c3aed"/>
+<text x="1067.6" y="407.0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="10" fill="#172033" font-weight="750" text-anchor="middle">10%</text>
 <rect x="118" y="525" width="14" height="14" rx="3" fill="#2563eb"/>
 <text x="140" y="537" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" fill="#172033">Flash off</text>
 <rect x="438" y="525" width="14" height="14" rx="3" fill="#059669"/>

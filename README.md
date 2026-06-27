@@ -27,6 +27,8 @@ The active suite contains:
 
 The language benchmark is Greek-focused, but it is not a clean grammar exam. It intentionally includes messy real-world text: missing accents, typos, Greeklish, mixed scripts, chat-like wording, names, dates, numbers, and short fragment answers.
 
+Language scoring first checks the extracted answer, then checks task regexes and normalized containment against the raw response. It also applies deterministic semantic matching for Greek/Greeklish and mixed-script answers by folding accents/punctuation, transliterating Greek to Greeklish, and comparing content-token coverage. It does not use a judge model.
+
 ## Results Summary
 
 ### Greek Language Understanding
@@ -37,15 +39,15 @@ All models below were evaluated on the same 108-task `language_understanding` se
 
 | Model | Run mode | Correct | Accuracy | Avg latency | Tokens |
 |---|---|---:|---:|---:|---:|
-| DeepSeek V4 Flash | thinking disabled | 100 / 108 | 92.6% | 2.6s | 48,529 |
-| DeepSeek V4 Flash | high thinking | 104 / 108 | 96.3% | 8.7s | 142,312 |
-| DeepSeek V4 Pro | thinking disabled | 101 / 108 | 93.5% | 16.4s | 82,914 |
-| DeepSeek V4 Pro | high thinking | 104 / 108 | 96.3% | 17.3s | 86,224 |
-| Gemma 4 31B IT Nitro | standard | 92 / 108 | 85.2% | 2.6s | 46,944 |
+| DeepSeek V4 Flash | thinking disabled | 107 / 108 | 99.1% | 2.6s | 48,529 |
+| DeepSeek V4 Flash | high thinking | 108 / 108 | 100.0% | 8.7s | 142,312 |
+| DeepSeek V4 Pro | thinking disabled | 105 / 108 | 97.2% | 16.4s | 82,914 |
+| DeepSeek V4 Pro | high thinking | 106 / 108 | 98.1% | 17.3s | 86,224 |
+| Gemma 4 31B IT Nitro | standard | 102 / 108 | 94.4% | 2.6s | 46,944 |
 
 ![Language latency](docs/images/model-language-latency.svg)
 
-Takeaway: DeepSeek Flash high-thinking and DeepSeek Pro high-thinking tied on this Greek language set. Flash got there with much lower latency in this run. Gemma was fast and handled many simple cases, but missed more partial-span answers in messy Greek/Greeklish text.
+Takeaway: semantic rescoring raises the language numbers because many correct answers were phrased as Greek/Greeklish paraphrases instead of exact spans. DeepSeek Flash high-thinking reached 108/108, Flash thinking-disabled missed one task, and Pro remained close but slower through this route. Gemma was fast and stronger than the original exact-span score suggested, but still trailed the DeepSeek runs.
 
 ### Active Suite
 
@@ -53,22 +55,22 @@ DeepSeek Flash and Gemma were run across the full active suite. DeepSeek Pro was
 
 | Benchmark | DeepSeek Flash, thinking disabled | DeepSeek Flash, high thinking | Gemma 4 31B IT Nitro |
 |---|---:|---:|---:|
-| `language_understanding` | 100 / 108, 92.6% | 104 / 108, 96.3% | 92 / 108, 85.2% |
+| `language_understanding` | 107 / 108, 99.1% | 108 / 108, 100.0% | 102 / 108, 94.4% |
 | `sample_math` | 8 / 8, 100.0% | 8 / 8, 100.0% | 8 / 8, 100.0% |
 | `sample_logic` | 6 / 6, 100.0% | 6 / 6, 100.0% | 6 / 6, 100.0% |
 | `sample_multiturn` | 2 / 2, 100.0% | 2 / 2, 100.0% | 2 / 2, 100.0% |
 | `sample_tools` | 2 / 2, 100.0% | 2 / 2, 100.0% | 2 / 2, 100.0% |
 | `aimo3_reference` | 3 / 10, 30.0% | 6 / 10, 60.0% | 4 / 10, 40.0% |
-| `aimo3_reference_multiturn` | 4 / 10, 40.0% | 4 / 10, 40.0% | 4 / 10, 40.0% |
-| `aimo3_reference_python_tools` | 1 / 10, 10.0% | 0 / 10, 0.0% | 1 / 10, 10.0% |
+| `aimo3_reference_multiturn` | 5 / 10, 50.0% | 4 / 10, 40.0% | 5 / 10, 50.0% |
+| `aimo3_reference_python_tools` | 3 / 10, 30.0% | 0 / 10, 0.0% | 1 / 10, 10.0% |
 
 Full active-suite summary:
 
 | Model | Correct | Accuracy | Tokens | Reasoning tokens | Avg latency |
 |---|---:|---:|---:|---:|---:|
-| DeepSeek V4 Flash, thinking disabled | 126 / 156 | 80.8% | 661,035 | 0 | 20.8s |
-| DeepSeek V4 Flash, high thinking | 132 / 156 | 84.6% | 1,262,225 | 823,681 | 109.5s |
-| Gemma 4 31B IT Nitro | 119 / 156 | 76.3% | 164,388 | 0 | 98.4s |
+| DeepSeek V4 Flash, thinking disabled | 136 / 156 | 87.2% | 661,035 | 0 | 20.8s |
+| DeepSeek V4 Flash, high thinking | 136 / 156 | 87.2% | 1,262,225 | 823,681 | 109.5s |
+| Gemma 4 31B IT Nitro | 130 / 156 | 83.3% | 164,388 | 0 | 98.4s |
 
 ### AIMO3 Hard Math
 
@@ -78,21 +80,21 @@ The AIMO3 subset is deliberately hard and small. It should be read as a stress t
 
 | Model | Single turn | Multi-turn | Python tools |
 |---|---:|---:|---:|
-| DeepSeek V4 Flash, thinking disabled | 3 / 10 | 4 / 10 | 1 / 10 |
+| DeepSeek V4 Flash, thinking disabled | 3 / 10 | 5 / 10 | 3 / 10 |
 | DeepSeek V4 Flash, high thinking | 6 / 10 | 4 / 10 | 0 / 10 |
-| DeepSeek V4 Pro, thinking disabled | 1 / 10 | 2 / 10 | 0 / 7 |
+| DeepSeek V4 Pro, thinking disabled | 2 / 10 | 2 / 10 | 2 / 7 |
 | DeepSeek V4 Pro, high thinking | 1 / 10 | 3 / 10 | 1 / 6 |
-| Gemma 4 31B IT Nitro | 4 / 10 | 4 / 10 | 1 / 10 |
+| Gemma 4 31B IT Nitro | 4 / 10 | 5 / 10 | 1 / 10 |
 
-Takeaway: high-thinking Flash did best on the single-turn AIMO3 subset, but none of the tested models are reliable enough for hard AIMO3-style math here. Multi-turn prompting and Python tool access did not consistently rescue performance.
+Takeaway: high-thinking Flash did best on the single-turn AIMO3 subset, but none of the tested models are reliable enough for hard AIMO3-style math here. Multi-turn prompting and Python tool access helped some individual rows after semantic rescoring, but did not consistently rescue performance.
 
 ## Main Conclusion
 
-DeepSeek V4 Flash is the strongest practical fit in these runs: it is excellent on the Greek language benchmark, clears the simple reasoning/tool smoke tests, and performs best among the full-suite runs.
+DeepSeek V4 Flash is the strongest practical fit in these runs: it is excellent on the Greek language benchmark, clears the simple reasoning/tool smoke tests, and remains best among the full-suite runs. High-thinking gets the cleanest language score, while thinking-disabled ties it on the full active suite with much lower latency.
 
-DeepSeek V4 Pro is strong on Greek language understanding, but in this setup it did not clearly beat Flash on the language set. Its published hard-math numbers come from the completed valid subset of the rerun, not a clean full active-suite pass.
+DeepSeek V4 Pro is strong on Greek language understanding, but in this setup it did not beat Flash on the language set. Its published hard-math numbers come from the completed valid subset of the rerun, not a clean full active-suite pass.
 
-Gemma 4 31B IT Nitro is a useful smaller baseline. It clears the simple math, logic, multi-turn, and basic tool tasks, but trails DeepSeek on messy Greek/Greeklish language understanding and is also weak on the hard AIMO3 subset.
+Gemma 4 31B IT Nitro is a useful smaller baseline. It clears the simple math, logic, multi-turn, and basic tool tasks, and semantic scoring shows it handles more messy Greek/Greeklish answers than exact-span scoring credited. It still trails DeepSeek on language understanding and is weak on the hard AIMO3 subset.
 
 ## Install
 
@@ -187,7 +189,7 @@ src/llm_eval/
   llm.py               # LiteLLM client and usage parsing
   tools.py             # tool registry and local tool implementations
   trace_writer.py      # async JSONL result writer
-  scoring.py           # exact/normalized/regex scoring
+  scoring.py           # exact/regex/semantic answer scoring
   reporting.py         # Markdown reports
 tests/
   test_*.py            # unit tests
@@ -339,8 +341,8 @@ CI runs on pull requests and pushes to `main` for Python 3.11 and 3.12. The work
 
 Recent Phase 5 validation status:
 
-- `46 passed`
-- `100%` test coverage
+- `70 passed`
+- `97.99%` test coverage
 - `uv run ruff check src tests` passed
 - `uv run --extra dev pre-commit run --all-files` passed
 
@@ -388,7 +390,7 @@ Transitive dependencies are pinned in `uv.lock`; the installed dependency scan f
 ## Limitations
 
 - The language benchmark is Greek-focused and intentionally includes messy/non-standard text.
-- Scoring is exact, normalized, or regex-based. It does not use judge-model grading.
+- Scoring is deterministic: exact, normalized, regex-based, and semantic-token matching. It does not use judge-model grading.
 - The AIMO3 set is small and intentionally difficult.
 - The published numbers are single-run results. We did not repeat runs with sampling to estimate variance or confidence intervals.
 - Local Python execution is for controlled evaluation tasks, not a hardened sandbox for untrusted code.
