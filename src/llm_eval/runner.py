@@ -33,7 +33,7 @@ from llm_eval.schemas import (
     ToolCallingTask,
     new_run_id,
 )
-from llm_eval.scoring import answer_correct, tool_selection_correct
+from llm_eval.scoring import response_correct, tool_selection_correct
 from llm_eval.trace_writer import AsyncTraceWriter
 
 
@@ -162,7 +162,7 @@ class EvaluationRunner:
                 expected_answer=task.answer,
                 raw_response=raw_response,
                 extracted_answer=extracted,
-                correct=answer_correct(task.answer, extracted, task.answer_regex),
+                correct=response_correct(task.answer, extracted, raw_response, task.answer_regex),
                 latency_seconds=time.perf_counter() - start,
                 prompt_tokens=response.prompt_tokens,
                 completion_tokens=response.completion_tokens,

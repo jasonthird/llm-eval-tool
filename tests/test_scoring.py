@@ -1,4 +1,4 @@
-from llm_eval.scoring import answer_correct, regex_matches, tool_selection_correct
+from llm_eval.scoring import answer_correct, regex_matches, response_correct, tool_selection_correct
 
 
 def test_answer_correct_exact_and_numeric():
@@ -45,3 +45,59 @@ def test_language_regexes_accept_short_direct_answers():
 
     for expected, extracted, pattern in cases:
         assert answer_correct(expected, extracted, pattern)
+
+
+def test_response_correct_matches_raw_response_when_extraction_is_too_short():
+    assert response_correct(
+        "στο pestview γαμιέται ο δίας ακόμη και χωρίς AI",
+        "AI",
+        "Ανέφερε ότι το pestview γαμιέται ο δίας ακόμη και χωρίς AI.",
+        r"pestview[\s\S]*γαμι[εέ]ται[\s\S]*δ[ιί]ας[\s\S]*AI",
+    )
+    assert response_correct(
+        "Στις 27 Μαΐου 1942",
+        "1942",
+        "Στις 27 Μαΐου 1942.",
+    )
+    assert not response_correct("cobalt", "blue", "The answer is green.")
+
+
+def test_response_correct_accepts_mixed_script_and_paraphrase_matches():
+    assert response_correct(
+        "telos panton, prepi na paroume to account tou stripe apo ton xagara, theloume na mas kani add opos eixe gini sto heroku kai sto azure kai oxi na mas dosi ta stixia.",
+        "prepi na παρουme το account tou stripe apo ton xagara, thelουμε na mas kani add οποs eixe gini sto heroku kai sto azure kai oxi na mas δοση ta stixia",
+        "FINAL_ANSWER: prepi na παρουme το account tou stripe apo ton xagara, thelουμε na mas kani add οποs eixe gini sto heroku kai sto azure kai oxi na mas δοση ta stixia.",
+    )
+    assert response_correct(
+        "προς το παρόν κοιτάς το board Client Documentation",
+        "Documentation",
+        "Αντικείμενο: board Client Documentation",
+    )
+    assert response_correct(
+        "ναι, ηθελα να δεις εαν χρειαζοταν κατι αλλο αλλαγη πριν τα παω εκει",
+        "εκεί",
+        "Το Taylor ανέφερε ότι χρειαζόταν να δει αν χρειάζεται κάτι άλλο πριν τα παω εκεί.",
+    )
+    assert response_correct(
+        "και μετα ολοι θα πρεπει να φερετε το local σας στη κατασταση που θα ειναι το remote",
+        "remote",
+        "Ο Casey ανέφερε ότι οι άλλοι θα πρέπει να φέρουν το local τους στη κατάσταση που θα είναι το remote.",
+    )
+    assert response_correct(
+        "ειχα ενα task, να βαλω να φαινονται τα consumables on visit appointment στα reports",
+        "reports",
+        "Το Casey ανέφερε ότι είχε ένα task να βάλει τα consumables να εμφανιστούν στα reports.",
+    )
+
+
+def test_response_correct_rejects_unrelated_short_responses():
+    assert not response_correct(
+        "na klaftei pou ton eipa oti den ginetai na kanoume amesws ylopoiisi kai na kanoume k swsto estimate mazi?",
+        "υπάρχει",
+        "Αυτό το κείμενο δεν υπάρχει.",
+    )
+    assert not response_correct(
+        "ekana upload to logo metatopia sto openproject epitelos kai alaksa to theme",
+        "OpenProject",
+        "Αναφέρεται στην επιλογή του λογότυπου του MetaProject για το OpenProject.",
+    )
